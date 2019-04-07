@@ -1,15 +1,14 @@
-'use strict';
 var cacheVersion = 1;
 var currentCache = {
   offline: 'offline-cache' + cacheVersion
 };
-const offlineUrl = ['juego.html', 'juego.js'];
+const offlineUrl = 'juego.html';
 
 this.addEventListener('install', event => {
   event.waitUntil(
     caches.open(currentCache.offline).then(function(cache) {
       return cache.addAll([
-        offlineUrl
+        offlineUrl, 'juego.js'
       ]);
     })
   );
@@ -34,17 +33,3 @@ this.addEventListener('fetch', event => {
     );
   }
 });
-
-
-function createCacheBustedRequest(url) {
-  let request = new Request(url, {cache: 'reload'});
-
-  if ('cache' in request){
-    return request;
-  }
-
-  let bustedUrl = new URL(url, self.location.href);
-  console.log(bustedUrl);
-  bustedUrl.search += (bustedUrl.search ? '&' : '') + 'cachebust=' + Date.now();
-  return new Request(bustedUrl);
-}
