@@ -1,4 +1,4 @@
-var cacheVersion = 2;
+var cacheVersion = 1;
 var currentCache = {
   offline: 'offline-cache' + cacheVersion
 };
