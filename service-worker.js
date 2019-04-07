@@ -1,3 +1,4 @@
+'use strict';
 var cacheVersion = 1;
 var currentCache = {
   offline: 'offline-cache' + cacheVersion
@@ -33,3 +34,17 @@ this.addEventListener('fetch', event => {
     );
   }
 });
+
+
+function createCacheBustedRequest(url) {
+  let request = new Request(url, {cache: 'reload'});
+
+  if ('cache' in request){
+    return request;
+  }
+
+  let bustedUrl = new URL(url, self.location.href);
+  console.log(bustedUrl);
+  bustedUrl.search += (bustedUrl.search ? '&' : '') + 'cachebust=' + Date.now();
+  return new Request(bustedUrl);
+}
