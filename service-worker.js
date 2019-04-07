@@ -2,7 +2,7 @@ var cacheVersion = 1;
 var currentCache = {
   offline: 'offline-cache' + cacheVersion
 };
-const offlineUrl = ['/juego.html', 'juego.js'];
+const offlineUrl = ['./juego.html', './juego.js'];
 
 this.addEventListener('install', event => {
   event.waitUntil(
