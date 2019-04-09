@@ -19,8 +19,7 @@ this.addEventListener('fetch', event => {
   // so include a check for Accept: text/html header.
   if (event.request.mode === 'navigate' || (event.request.method === 'GET' && event.request.headers.get('accept').includes('text/html'))) {
     event.respondWith(
-      fetch(event.request.url).catch(error => {
-        // Return the offline page
+      fetch(createCacheBustedRequest(event.request.url)).catch(error => {
         return caches.match(offlineUrl);
       })
     );
@@ -33,3 +32,18 @@ this.addEventListener('fetch', event => {
     );
   }
 });
+
+
+
+function createCacheBustedRequest(url) {
+  let request = new Request(url, {
+    cache: 'reload'
+  });
+  if ('cache' in request) {
+    return request;
+  }
+
+  let bustedUrl = new URL(url, self.location.href);
+  bustedUrl.search += (bustedUrl.search ? '&' : '') + 'cachebust=' + Date.now();
+  return new Request(bustedUrl);
+}
