@@ -8,7 +8,7 @@ this.addEventListener('install', event => {
   event.waitUntil(
     caches.open(currentCache.offline).then(function(cache) {
       return cache.addAll([
-        offlineUrl, 'juego.js'
+        offlineUrl, 'juego.js', 'service-worker.js'
       ]);
     })
   );
